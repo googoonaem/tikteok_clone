@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+.melos_tool/
+.vscode/
+android/.gradle/
+ios/Pods/
+node_modules/
+coverage/

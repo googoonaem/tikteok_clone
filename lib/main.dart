@@ -13,9 +13,11 @@ class TiktokApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tiktok clone',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primaryColor: Color(0xFFE9435A),
       ),
-      home: Container(),
+      home: Container(
+        decoration: BoxDecoration(color: Colors.amber),
+      ),
     );
   }
 }
