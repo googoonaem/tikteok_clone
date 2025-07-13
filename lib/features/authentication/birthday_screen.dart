@@ -1,44 +1,46 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
-class UsernameScreen extends StatefulWidget {
-  const UsernameScreen({super.key});
+class BirthdayScreen extends StatefulWidget {
+  const BirthdayScreen({super.key});
 
   @override
-  State<UsernameScreen> createState() => _UsernameScreenState();
+  State<BirthdayScreen> createState() => _BirthdayScreenState();
 }
 
-class _UsernameScreenState extends State<UsernameScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+class _BirthdayScreenState extends State<BirthdayScreen> {
+  final TextEditingController _birthdayController = TextEditingController();
 
-  String _username = "";
+  DateTime initialDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    _usernameController.addListener(() {
-      setState(() {
-        _username = _usernameController.text;
-      });
-    });
+    _setTextFieldDate(initialDate);
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _birthdayController.dispose();
     super.dispose();
   }
 
   void _onNextTap() {
-    if (_username.isEmpty) return;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EmailScreen(),
+        builder: (context) => InterestsScreen(),
       ),
     );
+  }
+
+  void _setTextFieldDate(DateTime date) {
+    final textDate = date.toString().split(" ").first;
+    _birthdayController.value = TextEditingValue(text: textDate);
   }
 
   @override
@@ -62,7 +64,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
           children: [
             Gaps.v40,
             Text(
-              "Create username",
+              "When's your birthday?",
               style: TextStyle(
                 fontSize: Sizes.size24,
                 fontWeight: FontWeight.w600,
@@ -70,7 +72,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
             ),
             Gaps.v8,
             Text(
-              "You can always change this later.",
+              "Your birthday won't be shown publicly.",
               style: TextStyle(
                 fontSize: Sizes.size16,
                 color: Colors.black54,
@@ -78,9 +80,9 @@ class _UsernameScreenState extends State<UsernameScreen> {
             ),
             Gaps.v20,
             TextField(
-              controller: _usernameController,
+              enabled: false,
+              controller: _birthdayController,
               decoration: InputDecoration(
-                  hintText: "Username",
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black,
@@ -101,11 +103,21 @@ class _UsernameScreenState extends State<UsernameScreen> {
             GestureDetector(
               onTap: _onNextTap,
               child: FormButton(
-                disabled: _username.isEmpty,
-                text: "Next",
+                disabled: false,
+                text: "Done",
               ),
             )
           ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        height: 300,
+        child: CupertinoDatePicker(
+          maximumDate: initialDate,
+          initialDateTime: initialDate,
+          mode: CupertinoDatePickerMode.date,
+          onDateTimeChanged: _setTextFieldDate,
         ),
       ),
     );
